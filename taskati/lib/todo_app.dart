@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskati/features/auth/presentation/login_screen.dart';
+import 'package:taskati/features/home/presentation/home_screen.dart';
 import 'features/splash/splash_screen.dart';
 
 class TodoApp extends StatelessWidget {
