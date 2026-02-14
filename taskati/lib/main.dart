@@ -13,4 +13,3 @@ void main()async {
   await Hive.openBox<TaskModel>(AppConstants.taskBoxName);
   runApp(const TodoApp());
 }
-
