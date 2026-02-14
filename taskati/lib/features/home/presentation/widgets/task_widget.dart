@@ -10,7 +10,7 @@ final TaskModel task;
     return Container(
       padding: EdgeInsets.all(10.r),
       decoration: BoxDecoration(borderRadius: BorderRadiusGeometry.circular(12.r)
-          ,color: task.color),
+          ,color: Color(task.colorValue)),
       child: Row(
         children: [
           Expanded(

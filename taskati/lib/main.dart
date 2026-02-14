@@ -8,6 +8,7 @@ import 'package:taskati/todo_app.dart';
 void main()async {
   await Hive.initFlutter();
    Hive.registerAdapter(UserAdapter());
+   Hive.registerAdapter(TaskModelAdapter());
   await Hive.openBox<User>(AppConstants.userBoxName);
   await Hive.openBox<TaskModel>(AppConstants.taskBoxName);
   runApp(const TodoApp());

@@ -18,7 +18,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
     };
     return TaskModel(
       statusText: fields[4] as String,
-      color: fields[5] as Color,
+      colorValue: fields[5] as int,
       title: fields[0] as String,
       description: fields[1] as String,
       start: fields[2] as String,
@@ -41,7 +41,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       ..writeByte(4)
       ..write(obj.statusText)
       ..writeByte(5)
-      ..write(obj.color);
+      ..write(obj.colorValue);
   }
 
   @override

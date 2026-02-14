@@ -4,8 +4,8 @@ import 'add_task_button.dart';
 
 
 class AddTaskRow extends StatelessWidget {
-  const AddTaskRow({super.key});
-
+  const AddTaskRow({super.key, this.tapped});
+final void Function()?tapped;
   @override
   Widget build(BuildContext context) {
     DateTime date = DateTime.now();
@@ -19,7 +19,7 @@ class AddTaskRow extends StatelessWidget {
           ],
         ),
         Spacer(),
-        AddTaskButton()
+        AddTaskButton(tapped: tapped,)
       ],
     );
   }
