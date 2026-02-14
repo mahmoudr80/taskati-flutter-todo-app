@@ -6,8 +6,9 @@ import 'package:taskati/core/constants/app_constants.dart';
 import 'package:taskati/core/widgets/custom_button.dart';
 import 'package:taskati/features/auth/presentation/widgets/custom_text_form.dart';
 import 'package:taskati/features/auth/presentation/widgets/profile_image_widget.dart';
+import 'package:taskati/features/home/presentation/home_screen.dart';
 
-import '../domain/user_class.dart';
+import '../data/models/user_class.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -61,15 +62,31 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void done()async {
-box =  Hive.box<User>(AppConstants.userBoxName);
+    if(nameController.text.isEmpty||_image==null)
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content:Text("Invalid username or image not exist",style: TextStyle(color: Colors.white),),
+          backgroundColor: Colors.redAccent,shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(12.r)),
+          padding: EdgeInsets.all(10.r),
+          )
+        );
+        return;
+      }
 
-box.put(AppConstants.currentUserKey,User(name: nameController.text,image: _image?.path??"")).then((value) {
-  User? user= box.get(AppConstants.currentUserKey);
-  print(user!.name??"");
-  print(user!.image??"");
-},).catchError((e){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content:Text("Login Successfully",style: TextStyle(color: Colors.white),),
+          backgroundColor: Colors.green,shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(12.r)),
+          padding: EdgeInsets.all(10.r),
+          duration: Duration(milliseconds: 200),
+        )
+    );
+    Future.delayed(Duration(milliseconds: 200)).then((value) {
+      box =  Hive.box<User>(AppConstants.userBoxName);
 
-  print("error $e");
-});}
+      box.put(AppConstants.currentUserKey,User(name: nameController.text,image: _image?.path??"")).then((value) {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>HomeScreen(),), (route) => false,);
+      },);
+    },);
+}
 
 }

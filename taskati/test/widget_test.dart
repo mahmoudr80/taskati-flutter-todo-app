@@ -7,14 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:taskati/main.dart';
-import 'package:taskati/todo_app.dart';
+import 'package:taskati/features/home/presentation/home_screen.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const TodoApp());
+    await tester.pumpWidget(const HomeScreen());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

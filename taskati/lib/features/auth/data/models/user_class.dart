@@ -1,5 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:hive/hive.dart';
 part 'user_class.g.dart';
 
 @HiveType(typeId:0)
