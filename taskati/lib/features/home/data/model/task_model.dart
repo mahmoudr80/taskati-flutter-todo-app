@@ -1,4 +1,3 @@
-
 import 'package:hive/hive.dart';
 part 'task_model.g.dart';
 
@@ -28,5 +27,11 @@ class TaskModel {
   required this.start,
   required this.end,
  });
-}
 
+ TaskModel copyWith(
+     {String? title, String ?description, String ?start,String ?end, String ?statusText, int ?colorValue}){
+  return TaskModel(statusText: statusText??this.statusText, colorValue: colorValue??this.colorValue,
+      title: title??this.title, description: description??this.description, start: start??this.start,
+      end: end??this.end);
+ }
+}

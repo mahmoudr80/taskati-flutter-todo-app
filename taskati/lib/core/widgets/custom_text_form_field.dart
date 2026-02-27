@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({super.key, required this.hintText,
+  const CustomTextFormField({super.key,  this.hintText,
     this.cusIcon, this.maxLines=1, this.tapped,  this.readOnly=false, this.controller,
   this.validator});
-final String hintText;
+final String ?hintText;
 final Icon? cusIcon;
 final int maxLines;
 final void Function()?tapped;

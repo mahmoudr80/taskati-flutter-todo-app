@@ -22,6 +22,6 @@ import 'package:flutter/material.dart';
             child: child!);
       },
     );
-   return picked;
+   return picked??DateTime.now();
 
    }

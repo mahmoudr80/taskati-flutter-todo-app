@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:taskati/core/constants/app_constants.dart';
 import 'package:taskati/features/home/data/model/task_model.dart';
-
 class TaskWidget extends StatelessWidget {
   const TaskWidget({super.key, required this.task});
 final TaskModel task;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +33,7 @@ final TaskModel task;
           ),
           SizedBox(width: 5.w,),
           RotatedBox(quarterTurns: 3,child:
-            Text("ToDO",style:  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),),)
+            Text(task.statusText,style:  Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),),)
         ],
       ),
     );

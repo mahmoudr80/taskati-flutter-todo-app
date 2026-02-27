@@ -8,4 +8,8 @@ class User {
   @HiveField(1)
   String name;
   User({required this.image,required this.name});
+
+ User copyWith({String? image,String?  name}){
+   return User(image: image??this.image, name: name??this.name);
+ }
 }
