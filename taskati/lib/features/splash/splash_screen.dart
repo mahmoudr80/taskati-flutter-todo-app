@@ -8,7 +8,10 @@ import 'package:taskati/core/constants/app_constants.dart';
 import 'package:taskati/features/auth/data/models/user_class.dart';
 import 'package:taskati/features/auth/presentation/login_screen.dart';
 import 'package:taskati/features/home/presentation/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../home/presentation/cubit/task_cubit.dart';
+import '../home/presentation/cubit/user_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,7 +30,16 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
       }
       else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => TaskCubit()..taskLoading(EnSort.all),
+              ),
+              BlocProvider(
+                create: (context) => UserCubit()..userLoading(),
+              ),
+            ],
+            child: HomeScreen()),));
 
       }
 

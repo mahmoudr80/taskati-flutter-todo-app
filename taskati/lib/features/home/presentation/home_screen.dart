@@ -1,88 +1,99 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
-import 'package:taskati/core/constants/app_constants.dart';
 import 'package:taskati/features/add_task/add_task_screen.dart';
-import 'package:taskati/features/auth/data/models/user_class.dart';
-import 'package:taskati/features/home/data/model/task_model.dart';
+import 'package:taskati/features/home/presentation/cubit/user_cubit.dart';
 import 'package:taskati/features/home/presentation/widgets/add_task_row.dart';
 import 'package:taskati/features/home/presentation/widgets/calender_row.dart';
+import 'package:taskati/features/home/presentation/widgets/dismissible_task_widget.dart';
 import 'package:taskati/features/home/presentation/widgets/home_appbar.dart';
-import 'package:taskati/features/home/presentation/widgets/task_widget.dart';
+import 'package:taskati/features/home/presentation/widgets/sort_widget.dart';
+import 'package:taskati/features/update_profile/update_profile_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+import 'cubit/task_cubit.dart';
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    void addTaskTapped()async{
-     await Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
-      setState(() {
-
-      });
-    }
-    var userData = Hive.box<User>(AppConstants.userBoxName).getAt(0);
+    List<String>sortList=['All','Complete','ToDo'];
+    int currentIndex=0;
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 15.w),
+          padding: EdgeInsets.symmetric(horizontal: 15.w),
           child: Column(
-            children:[
-              HomeAppbar(user: userData),
-              SizedBox(height: 15.h,),
-              AddTaskRow(tapped: addTaskTapped,),
-              SizedBox(height: 15.h,),
-              CalenderRow(),
-              SizedBox(height: 10.h,),
-              Expanded(
-                child: Hive.box<TaskModel>(AppConstants.taskBoxName).isEmpty?
-                Lottie.asset("assets/images/notFound.json")
-                    :ListView.separated(itemBuilder: (context, index) {
-                  return Dismissible(
-                      key: UniqueKey(),
-                      onDismissed: (direction)async {
-                        await  Hive.box<TaskModel>(AppConstants.taskBoxName).deleteAt(index);
-
-                        setState(() {
-
-                       });
+              children: [
+                BlocBuilder<UserCubit, UserState>(
+                  builder: (BuildContext context, state) {
+                   final readUserCubit = context.read<UserCubit>();
+                    return HomeAppbar(user: state.currentUser, tapped: () async {
+                      await Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => UpdateProfileScreen(),));
+                      readUserCubit.update();
+                    },);
+                  },
+                ),
+                SizedBox(height: 15.h,),
+                AddTaskRow(tapped: () async {
+                  final newTask = await Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTaskScreen(),));
+                  if(newTask!=null){context.read<TaskCubit>().addTask(newTask);
+                  }
+                },),
+                SizedBox(height: 15.h,),
+                CalenderRow(),
+                BlocBuilder<TaskCubit, TaskState>(
+                  builder: (context, state) {
+                    return SizedBox(
+                      height: 40.h,
+                      child: ListView.separated(itemBuilder:(context, index) {
+                        return  currentIndex==index?SortWidget(title: sortList[index],backColor: Colors.indigo,forColor: Colors.white,
+                          tapped: () {
+                            currentIndex = index;
+                            context.read<TaskCubit>().sorting(currentIndex);
+                          },)
+                            :SortWidget(title: sortList[index],tapped: () {
+                          currentIndex = index;
+                          context.read<TaskCubit>().sorting(currentIndex);
+                        },);
                       },
-                      background: Container(
-                          padding: EdgeInsets.all(10.r),
-                          decoration:BoxDecoration(
-                        color: Colors.green,
-
-                      ),
-                          child: Align(
-                              alignment: AlignmentGeometry.centerLeft,
-                              child: Icon(Icons.add,size: 35.r,color: Colors.white,))),
-                      secondaryBackground:Container(
-                          padding: EdgeInsets.all(10.r),
-                          decoration:BoxDecoration(
-                          color: Colors.red,
-
-                      ),child: Align(
-                          alignment: AlignmentGeometry.centerRight,
-                          child: Icon(Icons.delete,size: 35.r,color: Colors.white,))),
-                      child: TaskWidget(task: Hive.box<TaskModel>(AppConstants.taskBoxName).getAt(index)
-                        ??TaskModel(statusText: "statusText", colorValue: Colors.red.value, title: "title",
-                              description:" description", start:" start", end:" end"),));
-                }, separatorBuilder: (context, index) => SizedBox(height: 8.h,),
-                    itemCount: Hive.box<TaskModel>(AppConstants.taskBoxName).length),
-              )
-
-
-            ]
+                        separatorBuilder: (context, index) => SizedBox(width: 7.w,),
+                        itemCount:sortList.length,scrollDirection: Axis.horizontal,),
+                    );
+                  },
+                ),
+                SizedBox(height: 10.h,),
+                BlocBuilder<TaskCubit, TaskState>(
+                  builder: (BuildContext context, state) {
+                  final  readTaskCubit = context.read<TaskCubit>();
+                    return Expanded(
+                      child: state.listOfTasks.isEmpty ?
+                      Lottie.asset("assets/images/notFound.json")
+                          : ListView.separated(itemBuilder: (context, index) {
+                        return DismissibleTaskWidget(dismiss: (direction) {
+                          if (direction == DismissDirection.endToStart) {
+                            readTaskCubit.deleteTask(index);
+                          } else {
+                            readTaskCubit.completeTask(
+                                state.listOfTasks[index], index);
+                          }
+                        }, task: state.listOfTasks[index],
+                        );
+                      },
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 8.h,),
+                          itemCount: state.listOfTasks.length),
+                    );
+                  },
+                )
+              ]
           ),
         ),
       ),
     );
   }
 }
+
