@@ -1,7 +1,7 @@
 # taskati-flutter-todo-app
 Taskati is a simple and powerful task management app built with Flutter that helps users organize daily tasks, set priorities, and boost productivity with a clean and intuitive UI.
 
-<img  width="100" height="300" alt="Screenshot 2026-02-27 161745" src="https://github.com/user-attachments/assets/06b158b1-6191-4a24-ac2e-bb5a0cb1d4db" />
+<img  width="250" height="450" alt="Screenshot 2026-02-27 161745" src="https://github.com/user-attachments/assets/06b158b1-6191-4a24-ac2e-bb5a0cb1d4db" />
 <img  width="100" height="300" alt="Screenshot 2026-02-27 161736" src="https://github.com/user-attachments/assets/40c4a3cd-8f27-4645-b8cc-2d6a427443d0" />
 <img  width="100" height="300" alt="Screenshot 2026-02-27 161217" src="https://github.com/user-attachments/assets/08c5ab3c-1e2a-49d3-a3cd-309efce05a98" />
 <img   width="100" height="300" alt="Screenshot 2026-02-27 161201" src="https://github.com/user-attachments/assets/8b1521f2-04ef-486d-bb70-6004b6b0c065" />
