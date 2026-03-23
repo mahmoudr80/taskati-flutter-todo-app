@@ -1,6 +1,22 @@
 # taskati-flutter-todo-app
-Taskati is a simple and powerful task management app built with Flutter that helps users organize daily tasks, set priorities, and boost productivity with a clean and intuitive UI.
+Description:
+A Todo app built with Flutter to demonstrate Clean Architecture, local database storage, and user authentication. The app focuses on maintaining a clean, modular codebase while providing essential task management features.
 
+Key Features:
+
+User authentication
+Add, update, and delete tasks
+Local database storage for offline use
+Clean Architecture for maintainable code
+Git version control for code management
+
+Technologies & Tools:
+
+Flutter & Dart
+Local database (Hive)
+Authentication
+Clean Architecture
+Git version control
 
 <table>
   <tr>
