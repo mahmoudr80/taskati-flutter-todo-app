@@ -16,10 +16,7 @@ class UserAdapter extends TypeAdapter<User> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
-      image: fields[0] as String,
-      name: fields[1] as String,
-    );
+    return User(image: fields[0] as String, name: fields[1] as String);
   }
 
   @override

@@ -4,14 +4,15 @@ part of 'user_cubit.dart';
 sealed class UserState {
   final User? currentUser;
 
- const UserState({this.currentUser});
+  const UserState({this.currentUser});
 }
 
 final class UserInitial extends UserState {}
 
-final class UserLoadingState extends UserState {
-  const UserLoadingState({super.currentUser});
+final class GetUserLoading extends UserState {}
+
+final class GetUserSuccess extends UserState {
+  const GetUserSuccess({super.currentUser});
 }
-final class UserUpdateState extends UserState {
-  const UserUpdateState(User user):super(currentUser: user );
-}
+
+final class GetUserFailed extends UserState {}

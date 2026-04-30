@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import '../../../add_task/add_task_screen.dart';
+import '../cubit/home_cubit.dart';
 import 'add_task_button.dart';
 
 
-class AddTaskRow extends StatelessWidget {
-  const AddTaskRow({super.key, this.tapped});
+class _CustomAddTaskWidget extends StatelessWidget {
+  const _CustomAddTaskWidget({this.tapped});
 final void Function()?tapped;
   @override
   Widget build(BuildContext context) {
@@ -24,3 +27,27 @@ final void Function()?tapped;
     );
   }
 }
+
+class AddTaskRow extends StatelessWidget {
+  const AddTaskRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<HomeCubit, HomeState>(
+      listenWhen: (previous, current) => current.type == EnType.task,
+      listener: (context, state) {},
+      child: _CustomAddTaskWidget(
+        tapped: () async {
+          final newTask = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddTaskScreen()),
+          );
+          if (newTask != null) {
+            await context.read<HomeCubit>().addTask(newTask);
+          }
+        },
+      ),
+    );
+  }
+}
+
